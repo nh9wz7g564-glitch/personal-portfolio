@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>個人作品集 | Personal Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #b91c3c;
+    --dark: #1a1a1a;
+    --gold: #c9a227;
+    --cream: #faf7f2;
+    --card: #ffffff;
+    --muted: #6b6b6b;
+    --border: #e8e4df;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Noto Sans TC", system-ui, sans-serif; background: var(--cream); color: var(--dark); line-height: 1.65; }
+  header { background: linear-gradient(160deg, #1a1a1a 0%, #3d1a24 50%, #b91c3c 100%); color: white; padding: 3.5rem 1.5rem 2.5rem; text-align: center; position: relative; }
+  header::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 20% 80%, rgba(201,162,39,.15), transparent 50%); }
+  header h1 { font-family: "Playfair Display", serif; font-size: 2.8rem; letter-spacing: .5px; position: relative; }
+  .subtitle { margin-top: .4rem; font-size: 1.05rem; opacity: .9; position: relative; }
+  .author { margin-top: 1.2rem; font-size: .95rem; letter-spacing: 1px; opacity: .95; position: relative; }
+  .author span { margin: 0 .4rem; }
+  .lang-toggle { position: absolute; top: 1.2rem; right: 1.2rem; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25); color: white; padding: .45rem 1rem; border-radius: 30px; cursor: pointer; font-size: .85rem; backdrop-filter: blur(6px); }
+  nav { background: white; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 20; }
+  nav ul { display: flex; list-style: none; justify-content: center; }
+  nav a { display: block; padding: 1.1rem 1.4rem; text-decoration: none; color: var(--dark); font-weight: 500; position: relative; }
+  nav a:hover, nav a.active { color: var(--red); }
+  nav a.active::after { content: ""; position: absolute; bottom: 0; left: 20%; right: 20%; height: 2px; background: var(--red); }
+  .container { max-width: 1180px; margin: 0 auto; padding: 2.5rem 1.5rem; }
+  .intro { background: white; border-radius: 20px; padding: 2.2rem; margin-bottom: 2.5rem; box-shadow: 0 8px 30px rgba(0,0,0,.05); border: 1px solid var(--border); }
+  .intro h2 { font-family: "Playfair Display", serif; font-size: 1.6rem; margin-bottom: .8rem; color: var(--dark); }
+  .main-tabs, .sub-tabs { display: flex; gap: .7rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .tab-btn, .sub-tab-btn { padding: .6rem 1.3rem; border: 1.5px solid var(--border); background: white; border-radius: 30px; cursor: pointer; font-size: .9rem; transition: all .25s; }
+  .tab-btn.active, .tab-btn:hover, .sub-tab-btn.active, .sub-tab-btn:hover { background: var(--dark); color: white; border-color: var(--dark); }
+  .section-title { font-family: "Playfair Display", serif; font-size: 1.5rem; margin: 1.8rem 0 1rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.8rem; }
+  .card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 6px 24px rgba(0,0,0,.07); transition: all .3s; border: 1px solid var(--border); }
+  .card:hover { transform: translateY(-6px); box-shadow: 0 16px 40px rgba(0,0,0,.12); }
+  .card img { width: 100%; height: 230px; object-fit: cover; cursor: pointer; }
+  .card-body { padding: 1.2rem 1.3rem 1.4rem; }
+  .card h3 { font-size: 1.05rem; margin-bottom: .3rem; font-weight: 700; }
+  .card .en { font-size: .82rem; color: var(--muted); margin-bottom: .6rem; font-style: italic; }
+  .desc-area { font-size: .9rem; color: #444; min-height: 1.4em; margin-top: .4rem; }
+  .add-desc-btn { display: inline-block; margin-top: .6rem; font-size: .8rem; color: var(--red); background: none; border: none; cursor: pointer; text-decoration: underline; }
+  .add-desc-btn:hover { color: var(--dark); }
+  .video-card { background: #111; border-radius: 16px; overflow: hidden; box-shadow: 0 6px 24px rgba(0,0,0,.12); }
+  .video-placeholder { background: linear-gradient(135deg, #222, #3a3a3a); height: 190px; display: flex; align-items: center; justify-content: center; color: #aaa; font-size: 1rem; position: relative; }
+  .video-placeholder::before { content: "▶"; font-size: 2.8rem; opacity: .4; margin-right: .5rem; }
+  .video-card .card-body { background: white; }
+  .upload-section { background: white; border-radius: 20px; padding: 2.2rem; margin-top: 3rem; box-shadow: 0 8px 30px rgba(0,0,0,.05); border: 1px solid var(--border); }
+  .upload-section h2 { font-family: "Playfair Display", serif; margin-bottom: 1rem; }
+  form { display: grid; gap: 1rem; max-width: 640px; }
+  label { font-weight: 500; font-size: .92rem; }
+  input, select, textarea { padding: .75rem .9rem; border: 1.5px solid var(--border); border-radius: 10px; font-family: inherit; font-size: .95rem; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--red); }
+  button[type=submit] { background: var(--red); color: white; border: none; padding: .95rem 1.6rem; border-radius: 10px; font-size: 1rem; cursor: pointer; font-weight: 500; }
+  button[type=submit]:hover { background: #9a1632; }
+  .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.88); z-index: 100; align-items: center; justify-content: center; }
+  .modal.active { display: flex; }
+  .modal img { max-width: 92%; max-height: 92vh; border-radius: 12px; }
+  .modal .close { position: absolute; top: 1.2rem; right: 1.5rem; color: white; font-size: 2.2rem; cursor: pointer; }
+  footer { background: var(--dark); color: #aaa; text-align: center; padding: 1.8rem; font-size: .85rem; margin-top: 4rem; }
+  .hidden { display: none !important; }
+  .tag { display: inline-block; background: #f5f0ea; color: var(--red); padding: .2rem .7rem; border-radius: 20px; font-size: .75rem; margin-bottom: .4rem; }
+  @media (max-width: 640px) {
+    header h1 { font-size: 2rem; }
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  .drive-card { background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 6px 24px rgba(0,0,0,.07); border: 1px solid var(--border); transition: all .3s; }
+  .drive-card:hover { transform: translateY(-5px); box-shadow: 0 14px 36px rgba(0,0,0,.12); }
+  .drive-thumb { height: 180px; background: linear-gradient(135deg, #1a1a1a, #3d1a24); display: flex; align-items: center; justify-content: center; position: relative; color: white; }
+  .drive-thumb .play { width: 64px; height: 64px; border-radius: 50%; background: rgba(255,255,255,.18); display: flex; align-items: center; justify-content: center; font-size: 1.8rem; backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,.3); }
+  .drive-thumb .label { position: absolute; bottom: 10px; left: 12px; font-size: .75rem; opacity: .8; letter-spacing: .5px; }
+  .link-input { font-family: monospace; font-size: .9rem; }
+  .open-link { display: inline-block; margin-top: .6rem; padding: .4rem .9rem; background: var(--red); color: white; border-radius: 20px; text-decoration: none; font-size: .85rem; }
+  .open-link:hover { background: #9a1632; }
+
+</style>
+</head>
+<body>
+<header>
+  <button class="lang-toggle" onclick="toggleLang()">EN / 中文</button>
+  <h1 id="title">個人作品集</h1>
+  <p class="subtitle" id="subtitle">Personal Portfolio · 內容設計與視覺創作</p>
+  <div class="author">羅穎心 <span>LUO YINGXIN</span> Tel: 69409960</div>
+</header>
+
+<nav>
+  <ul>
+    <li><a href="#works" class="active">作品 Works</a></li>
+    <li><a href="#about">關於 About</a></li>
+    <li><a href="#upload">上傳 Upload</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+  <section class="intro" id="about">
+    <h2 id="about-title">關於這份作品集</h2>
+    <p id="about-text">本作品集整理個人在實習與其他兼職過程中的海報和視頻作品。</p>
+  </section>
+
+  <section id="works">
+    <div class="main-tabs">
+      <button class="tab-btn active" data-main="gzbank">廣州銀行 Guangzhou Bank</button>
+      <button class="tab-btn" data-main="others">其他 Others</button>
+    </div>
+
+    <div id="gzbank-section">
+      <div class="sub-tabs">
+        <button class="sub-tab-btn active" data-sub="posters">長圖及海報 Long Images & Posters</button>
+        <button class="sub-tab-btn" data-sub="aivideo">AI 視頻 AI Videos</button>
+      </div>
+      <div id="posters-grid" class="grid"></div>
+      <div id="aivideo-grid" class="grid hidden"></div>
+    </div>
+
+    <div id="others-section" class="hidden">
+      <h2 class="section-title">其他作品 Other Works</h2>
+      <div id="others-grid" class="grid">
+        <div class="card">
+          <div class="card-body">
+            <h3>更多作品即將加入</h3>
+            <p class="desc-area">此分區預留給非廣州銀行相關的個人創作與其他項目。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="upload-section" id="upload">
+    <h2>上傳新作品 Upload New Work</h2>
+    <p style="margin-bottom:1.2rem;color:var(--muted);">長圖及海報可上傳圖片；AI 視頻與其他分區可貼上 Google Drive 連結（或其他網址）。</p>
+    <form id="uploadForm">
+      <div><label>作品標題 Title</label><input type="text" id="upTitle" required placeholder="例如：端午安全檢查長圖"></div>
+      <div><label>英文標題 English Title</label><input type="text" id="upEnTitle" placeholder="e.g. Dragon Boat Festival Safety"></div>
+      <div><label>所屬分區 Section</label>
+        <select id="upMain" required>
+          <option value="gzbank">廣州銀行 Guangzhou Bank</option>
+          <option value="others">其他 Others</option>
+        </select>
+      </div>
+      <div><label>子分區（廣州銀行）Sub-section</label>
+        <select id="upSub">
+          <option value="posters">長圖及海報 Long Images & Posters</option>
+          <option value="aivideo">AI 視頻 AI Videos</option>
+        </select>
+      </div>
+      <div><label>簡短描述 Description（可選）</label><textarea id="upDesc" rows="2" placeholder="可稍後在作品卡片上添加"></textarea></div>
+      <div><label>上傳檔案 File (圖片 / 視頻)</label><input type="file" id="upFile" accept="image/*,video/*"></div>
+      <button type="submit">提交並預覽 Submit & Preview</button>
+    </form>
+    <div id="uploadPreview" style="margin-top:1.8rem;"></div>
+  </section>
+</div>
+
+<div class="modal" id="modal">
+  <span class="close" onclick="closeModal()">&times;</span>
+  <img id="modalImg" src="" alt="">
+</div>
+
+<footer>
+  <p>個人作品集 Personal Portfolio · 羅穎心 LUO YINGXIN · 2026</p>
+</footer>
+
+<script>
+const originalPosters = [
+  { id: "p1", title: "緊繃安全之弦 筑牢節日防線", en: "Tightening the String of Safety", img: "images/img_1.jpg", type: "image" },
+  { id: "p2", title: "一堂清廉課 一場莊嚴宣誓", en: "A Lesson in Integrity", img: "images/img_2.jpg", type: "image" },
+  { id: "p3", title: "七一燃初心 青春啟新程", en: "July 1 Ignites Aspiration", img: "images/img_3.jpg", type: "image" },
+  { id: "p4", title: "觀羊城發展脈絡 做時代青年先鋒", en: "Tracing Guangzhou’s Development", img: "images/img_4.jpg", type: "image" },
+  { id: "p5", title: "慶「七一」鑄魂守初心 實幹篤行", en: "Celebrating July 1 Party Day", img: "images/img_5.jpg", type: "image" },
+  { id: "p6", title: "周萃一線 經驗秒享 第13期", en: "Weekly Highlights — Enterprise Service", img: "images/img_6.jpg", type: "image" },
+  { id: "p7", title: "周萃一線 經驗秒享 第14期", en: "Weekly Highlights — Aircraft Leasing", img: "images/img_7.jpg", type: "image" },
+  { id: "p8", title: "天河中心支行招聘公告", en: "Tianhe Center Branch Recruitment", img: "images/img_8.jpg", type: "image" },
+  { id: "p9", title: "慶「七一」鑄魂守初心（主題黨日）", en: "July 1 Theme Party Day", img: "images/img_9.jpg", type: "image" },
+  { id: "p10", title: "初心承薪火 青春唱華章", en: "Passing the Torch — Arts Performance", img: "images/img_10.jpg", type: "image" },
+  { id: "p11", title: "蓄力啟新程 築夢正當時", en: "Building Momentum — Onboarding", img: "images/img_11.jpg", type: "image" },
+  { id: "p12", title: "守牢思想防線 聚力實幹攻堅", en: "Strengthening Ideological Defense", img: "images/img_12.jpg", type: "image" },
+  { id: "p13", title: "消防實訓 護航新人", en: "Fire Safety Drill for New Staff", img: "images/img_13.jpg", type: "image" }
+];
+
+
+const defaultVideos = [
+  {
+    id: "v_risk",
+    title: "廣州銀行風險管理部宣傳視頻",
+    en: "Guangzhou Bank Risk Management Department Promotional Video",
+    cover: "images/img_14.jpg",
+    link: "https://drive.google.com/file/d/18Mty0sL5kOOp-BCPN-spYetyIVjvXAVH/view?usp=drive_link",
+    section: "aivideo",
+    custom: false,
+    presetDesc: "廣州銀行風險管理部宣傳視頻。根據部門提供的腳本和要求用grok AI進行視頻製作，並用Capcut完成後期剪輯。"
+  },
+  {
+    id: "v135",
+    title: "135—廣銀新軍 整體規劃介紹",
+    en: "135 Guangzhou Bank New Recruits Overall Plan Introduction",
+    cover: "images/img_15.jpg",
+    link: "https://drive.google.com/file/d/1fJjSBp4qOXsZsOeDk-SGtjt2REDz_WlJ/view?usp=drive_link",
+    section: "aivideo",
+    custom: false,
+    presetDesc: "廣州銀行“135計劃”介紹視頻。根據銀行提供的紅頭文件製作腳本，用grok AI完成視頻畫面製作，並用Capcut進行後期剪輯。"
+  }
+];
+
+
+const defaultOthers = [
+  {
+    id: "o_icbc",
+    title: "中國工商銀行微課作品",
+    en: "ICBC Micro-Course Work",
+    cover: "images/img_16.jpg",
+    link: "https://drive.google.com/file/d/10ea-_Jk5eBiCsEVooJ-NMMjGUfYWlm1m/view?usp=sharing",
+    section: "others",
+    custom: false,
+    presetDesc: "中國工商銀行微課作品視頻，根據提供的文字腳本用ai生成畫面並用Capcut配音、剪輯。"
+  },
+  {
+    id: "o_dongguan",
+    title: "東莞醫療團隊宣傳視頻",
+    en: "Dongguan Medical Team Promotional Video",
+    cover: "images/img_17.jpg",
+    link: "https://drive.google.com/file/d/1ILKGoar1QU8JeDA77d8JD3fvtTyLmQwT/view?usp=sharing",
+    section: "others",
+    custom: false,
+    presetDesc: "東莞醫療團隊宣傳視頻。根據對方提供的形象照和音頻，用ai製作。"
+  }
+];
+
+let customWorks = JSON.parse(localStorage.getItem("customWorks") || "[]").filter(w => w.section !== "aivideo" || w.id === "v135");
+
+function saveCustom() {
+  localStorage.setItem("customWorks", JSON.stringify(customWorks));
+}
+
+function getAllPosters() {
+  return [...originalPosters, ...customWorks.filter(w => w.section === "posters")];
+}
+function getAllVideos() {
+  return [...defaultVideos, ...customWorks.filter(w => w.section === "aivideo")];
+}
+function getAllOthers() {
+  return [...defaultOthers, ...customWorks.filter(w => w.section === "others")];
+}
+
+function getDesc(id) { return localStorage.getItem("desc_" + id) || ""; }
+function setDesc(id, text) { localStorage.setItem("desc_" + id, text); }
+
+let currentLang = "zh";
+let currentMain = "gzbank";
+let currentSub = "posters";
+
+function toEmbedUrl(url) {
+  if (!url) return "";
+  const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
+  if (m) return `https://drive.google.com/file/d/${m[1]}/preview`;
+  return url;
+}
+
+function renderPosters() {
+  const grid = document.getElementById("posters-grid");
+  grid.innerHTML = "";
+  getAllPosters().forEach(w => {
+    const desc = getDesc(w.id);
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <img src="${w.img}" alt="${w.title}" onclick="openModal('${w.img}')">
+      <div class="card-body">
+        <span class="tag">長圖及海報</span>
+        <h3>${currentLang === "zh" ? w.title : (w.en || w.title)}</h3>
+        <div class="en">${currentLang === "zh" ? (w.en || "") : w.title}</div>
+        <div class="desc-area">${desc || '<span style="color:#aaa">尚未添加描述</span>'}</div>
+        <button class="add-desc-btn" onclick="editDesc('${w.id}')">${desc ? "編輯描述" : "添加描述"}</button>
+        ${w.custom ? `<button class="add-desc-btn" style="color:#999;margin-left:.8rem;" onclick="deleteWork('${w.id}')">刪除</button>` : ""}
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function renderAIVideos() {
+  const grid = document.getElementById("aivideo-grid");
+  grid.innerHTML = "";
+  const videos = getAllVideos();
+  if (videos.length === 0) {
+    grid.innerHTML = `<div class="drive-card"><div class="drive-thumb"><div class="play">▶</div><div class="label">GOOGLE DRIVE</div></div><div class="card-body"><h3>尚無 AI 視頻</h3><p class="desc-area">請在下方貼上 Google Drive 分享連結。</p></div></div>`;
+    return;
+  }
+  videos.forEach(v => {
+    const desc = getDesc(v.id);
+    const embed = toEmbedUrl(v.link);
+    const card = document.createElement("div");
+    card.className = "drive-card";
+    const thumb = v.cover 
+      ? `<div class="drive-thumb" style="background:url('${v.cover}') center/cover;" onclick="window.open('${v.link}', '_blank')"><div class="play">▶</div><div class="label">GOOGLE DRIVE</div></div>`
+      : `<div class="drive-thumb" onclick="window.open('${v.link}', '_blank')"><div class="play">▶</div><div class="label">GOOGLE DRIVE</div></div>`;
+    card.innerHTML = `
+      ${thumb}
+      <div class="card-body">
+        <span class="tag">AI 視頻</span>
+        <h3>${currentLang === "zh" ? v.title : (v.en || v.title)}</h3>
+        <div class="en">${currentLang === "zh" ? (v.en || "") : v.title}</div>
+        <div class="desc-area">${desc || '<span style="color:#aaa">尚未添加描述</span>'}</div>
+        <a class="open-link" href="${v.link}" target="_blank" rel="noopener">在 Google Drive 開啟</a>
+        <button class="add-desc-btn" onclick="editDesc('${v.id}')">${desc ? "編輯描述" : "添加描述"}</button>
+        <button class="add-desc-btn" style="color:#999;margin-left:.8rem;" onclick="deleteWork('${v.id}')">刪除</button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function renderOthers() {
+  const grid = document.getElementById("others-grid");
+  grid.innerHTML = "";
+  const items = getAllOthers();
+  if (items.length === 0) {
+    grid.innerHTML = `<div class="drive-card"><div class="drive-thumb" style="background:linear-gradient(135deg,#2c2c2c,#555)"><div class="play">＋</div><div class="label">OTHER WORKS</div></div><div class="card-body"><h3>尚無其他作品</h3><p class="desc-area">可上傳圖片，或貼上 Google Drive / 其他連結。</p></div></div>`;
+    return;
+  }
+  items.forEach(item => {
+    const desc = getDesc(item.id);
+    const card = document.createElement("div");
+    card.className = item.link ? "drive-card" : "card";
+    if (item.link) {
+      const thumb = item.cover
+        ? `<div class="drive-thumb" style="background:url('${item.cover}') center/cover;" onclick="window.open('${item.link}', '_blank')"><div class="play">▶</div><div class="label">GOOGLE DRIVE</div></div>`
+        : `<div class="drive-thumb" onclick="window.open('${item.link}', '_blank')" style="background:linear-gradient(135deg,#2c2c2c,#444)"><div class="play">↗</div><div class="label">EXTERNAL LINK</div></div>`;
+      card.innerHTML = `
+        ${thumb}
+        <div class="card-body">
+          <span class="tag">其他</span>
+          <h3>${currentLang === "zh" ? item.title : (item.en || item.title)}</h3>
+          <div class="en">${currentLang === "zh" ? (item.en || "") : item.title}</div>
+          <div class="desc-area">${desc || '<span style="color:#aaa">尚未添加描述</span>'}</div>
+          <a class="open-link" href="${item.link}" target="_blank" rel="noopener">開啟連結</a>
+          <button class="add-desc-btn" onclick="editDesc('${item.id}')">${desc ? "編輯描述" : "添加描述"}</button>
+          <button class="add-desc-btn" style="color:#999;margin-left:.8rem;" onclick="deleteWork('${item.id}')">刪除</button>
+        </div>
+      `;
+    } else {
+      card.innerHTML = `
+        <img src="${item.img}" alt="${item.title}" onclick="openModal('${item.img}')">
+        <div class="card-body">
+          <span class="tag">其他</span>
+          <h3>${currentLang === "zh" ? item.title : (item.en || item.title)}</h3>
+          <div class="en">${currentLang === "zh" ? (item.en || "") : item.title}</div>
+          <div class="desc-area">${desc || '<span style="color:#aaa">尚未添加描述</span>'}</div>
+          <button class="add-desc-btn" onclick="editDesc('${item.id}')">${desc ? "編輯描述" : "添加描述"}</button>
+          <button class="add-desc-btn" style="color:#999;margin-left:.8rem;" onclick="deleteWork('${item.id}')">刪除</button>
+        </div>
+      `;
+    }
+    grid.appendChild(card);
+  });
+}
+
+function editDesc(id) {
+  const current = getDesc(id);
+  const text = prompt(currentLang === "zh" ? "請輸入作品描述：" : "Enter description:", current);
+  if (text !== null) {
+    setDesc(id, text.trim());
+    refreshAll();
+  }
+}
+
+function deleteWork(id) {
+  if (!confirm("確定要刪除此作品？")) return;
+  customWorks = customWorks.filter(w => w.id !== id);
+  localStorage.removeItem("desc_" + id);
+  saveCustom();
+  refreshAll();
+}
+
+function refreshAll() {
+  renderPosters();
+  renderAIVideos();
+  renderOthers();
+}
+
+function showSection() {
+  document.getElementById("gzbank-section").classList.toggle("hidden", currentMain !== "gzbank");
+  document.getElementById("others-section").classList.toggle("hidden", currentMain !== "others");
+  document.getElementById("posters-grid").classList.toggle("hidden", currentSub !== "posters");
+  document.getElementById("aivideo-grid").classList.toggle("hidden", currentSub !== "aivideo");
+}
+
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentMain = btn.dataset.main;
+    showSection();
+  });
+});
+
+document.querySelectorAll(".sub-tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".sub-tab-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentSub = btn.dataset.sub;
+    showSection();
+  });
+});
+
+function openModal(src) {
+  document.getElementById("modalImg").src = src;
+  document.getElementById("modal").classList.add("active");
+}
+function closeModal() {
+  document.getElementById("modal").classList.remove("active");
+}
+document.getElementById("modal").addEventListener("click", e => {
+  if (e.target.id === "modal") closeModal();
+});
+
+function toggleLang() {
+  currentLang = currentLang === "zh" ? "en" : "zh";
+  document.getElementById("title").textContent = currentLang === "zh" ? "個人作品集" : "Personal Portfolio";
+  document.getElementById("subtitle").textContent = currentLang === "zh"
+    ? "Personal Portfolio · 內容設計與視覺創作"
+    : "Personal Portfolio · Content Design & Visual Creation";
+  document.getElementById("about-title").textContent = currentLang === "zh" ? "關於這份作品集" : "About This Portfolio";
+  document.getElementById("about-text").textContent = currentLang === "zh"
+    ? "本作品集整理個人在實習與其他兼職過程中的海報和視頻作品。"
+    : "This portfolio collects posters and video works created during my internship and other part-time projects.";
+  refreshAll();
+}
+
+// Dynamic form fields
+const form = document.getElementById("uploadForm");
+const fileField = form.querySelector('input[type=file]').parentElement;
+const linkField = document.createElement("div");
+linkField.innerHTML = `<label>Google Drive 連結 Drive Link</label><input type="url" id="upLink" class="link-input" placeholder="https://drive.google.com/file/d/.../view">`;
+linkField.style.display = "none";
+form.insertBefore(linkField, fileField.nextSibling);
+
+
+// Cover upload field
+const coverField = document.createElement("div");
+coverField.innerHTML = `<label>上傳封面 Cover Image（選填）</label><input type="file" id="upCover" accept="image/*">`;
+coverField.style.display = "none";
+const existingLinkField = document.querySelector("#upLink")?.parentElement;
+if (existingLinkField) form.insertBefore(coverField, existingLinkField.nextSibling);
+
+function updateFormFields() {
+  const main = document.getElementById("upMain").value;
+  const sub = document.getElementById("upSub").value;
+  const isVideo = (main === "gzbank" && sub === "aivideo");
+  const isOthers = main === "others";
+  const fileDiv = document.getElementById("upFile")?.parentElement;
+  const linkDiv = document.getElementById("upLink")?.parentElement;
+  if (fileDiv) fileDiv.style.display = isVideo ? "none" : "block";
+  if (linkDiv) linkDiv.style.display = (isVideo || isOthers) ? "block" : "none";
+  if (coverField) coverField.style.display = isVideo ? "block" : "none";
+}
+document.getElementById("upMain").addEventListener("change", updateFormFields);
+document.getElementById("upSub").addEventListener("change", updateFormFields);
+updateFormFields();
+
+function _unusedUpdateFormFields() {
+  const main = document.getElementById("upMain").value;
+  const sub = document.getElementById("upSub").value;
+  const isLinkMode = (main === "gzbank" && sub === "aivideo") || main === "others";
+  fileField.style.display = isLinkMode && main === "gzbank" && sub === "aivideo" ? "none" : "block";
+  linkField.style.display = isLinkMode ? "block" : "none";
+  if (main === "others") {
+    fileField.style.display = "block"; // allow both
+  }
+}
+document.getElementById("upMain").addEventListener("change", updateFormFields);
+document.getElementById("upSub").addEventListener("change", updateFormFields);
+updateFormFields();
+
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  const title = document.getElementById("upTitle").value.trim();
+  const en = document.getElementById("upEnTitle").value.trim() || title;
+  const main = document.getElementById("upMain").value;
+  const sub = document.getElementById("upSub").value;
+  const desc = document.getElementById("upDesc").value.trim();
+  const link = (document.getElementById("upLink") || {}).value?.trim() || "";
+  const file = document.getElementById("upFile").files[0];
+
+  const id = "c" + Date.now();
+  let section = main === "gzbank" ? sub : "others";
+  let newWork = { id, title, en, section, custom: true };
+
+  if (section === "aivideo") {
+    if (!link) { alert("請貼上 Google Drive 連結"); return; }
+    newWork.link = link;
+    const coverFile = document.getElementById("upCover")?.files[0];
+    if (coverFile) {
+      const reader = new FileReader();
+      newWork.cover = await new Promise(res => { reader.onload = () => res(reader.result); reader.readAsDataURL(coverFile); });
+    }
+  } else if (section === "others") {
+    if (link) newWork.link = link;
+    if (file) {
+      const reader = new FileReader();
+      const dataUrl = await new Promise(res => { reader.onload = () => res(reader.result); reader.readAsDataURL(file); });
+      newWork.img = dataUrl;
+      newWork.type = "image";
+    }
+    if (!link && !file) { alert("請上傳圖片或貼上連結"); return; }
+  } else {
+    // posters
+    if (!file) { alert("請選擇圖片檔案"); return; }
+    const reader = new FileReader();
+    const dataUrl = await new Promise(res => { reader.onload = () => res(reader.result); reader.readAsDataURL(file); });
+    newWork.img = dataUrl;
+    newWork.type = "image";
+  }
+
+  customWorks.push(newWork);
+  if (desc) setDesc(id, desc);
+  saveCustom();
+  refreshAll();
+  showSection();
+  alert("已添加並永久保存！");
+  form.reset();
+  updateFormFields();
+});
+
+// Export / Import
+function exportPortfolio() {
+  const descMap = {};
+  [...originalPosters, ...customWorks].forEach(w => {
+    const d = getDesc(w.id);
+    if (d) descMap[w.id] = d;
+  });
+  const backup = { customWorks, descriptions: descMap, exportedAt: new Date().toISOString() };
+  const blob = new Blob([JSON.stringify(backup, null, 2)], {type: "application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "portfolio-backup-" + new Date().toISOString().slice(0,10) + ".json";
+  a.click();
+  alert("備份已下載。");
+}
+
+const uploadSection = document.getElementById("upload");
+const exportBtn = document.createElement("button");
+exportBtn.textContent = "匯出備份 Export Backup";
+exportBtn.style.cssText = "margin-top:1.5rem; background:#1a1a1a; color:white; border:none; padding:.9rem 1.5rem; border-radius:10px; cursor:pointer;";
+exportBtn.onclick = exportPortfolio;
+uploadSection.appendChild(exportBtn);
+
+const importInput = document.createElement("input");
+importInput.type = "file";
+importInput.accept = ".json";
+importInput.style.marginTop = "1rem";
+importInput.onchange = async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  try {
+    const data = JSON.parse(await file.text());
+    if (data.customWorks) { customWorks = data.customWorks; saveCustom(); }
+    if (data.descriptions) Object.entries(data.descriptions).forEach(([id, d]) => setDesc(id, d));
+    refreshAll();
+    alert("備份已匯入。");
+  } catch (err) { alert("匯入失敗"); }
+};
+const importLabel = document.createElement("div");
+importLabel.style.marginTop = "1rem";
+importLabel.innerHTML = "<label style='display:block;margin-bottom:.4rem;'>匯入備份 Import Backup：</label>";
+importLabel.appendChild(importInput);
+uploadSection.appendChild(importLabel);
+
+// Apply preset descriptions for default videos
+defaultOthers.forEach(v => {
+  if (v.presetDesc && !localStorage.getItem("desc_" + v.id)) {
+    localStorage.setItem("desc_" + v.id, v.presetDesc);
+  }
+});
+defaultVideos.forEach(v => {
+  if (v.presetDesc && !localStorage.getItem("desc_" + v.id)) {
+    localStorage.setItem("desc_" + v.id, v.presetDesc);
+  }
+});
+refreshAll();
+showSection();
+</script>
+</body>
+</html>
